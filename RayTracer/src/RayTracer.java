@@ -145,7 +145,7 @@ public class RayTracer {
 					System.out.println(String.format("Parsed material (line %d)", lineNum));
 
 				} else if (code.equals("sph")) {
-					if (params.length != 5) {
+					if (params.length < 5) {
 						System.out.println("sphere input file error");
 						r.close();
 						return;
@@ -156,7 +156,15 @@ public class RayTracer {
 							Double.parseDouble(params[2]));
 					double rad = Double.parseDouble(params[3]);
 					int mat_index = Integer.parseInt(params[4]);
-					surfaces_list.add(new Sphere(center, rad, mat_index));
+
+					Point direction = null;
+					float movementSize = 0f;
+					if(params.length == 9){
+						direction = new Point(Double.parseDouble(params[5]), Double.parseDouble(params[6]),
+							Double.parseDouble(params[7]));
+						movementSize = Float.parseFloat(params[8]);
+					}
+					surfaces_list.add(new Sphere(center, rad, mat_index, direction, movementSize));
 
 					System.out.println(String.format("Parsed sphere (line %d)", lineNum));
 				} else if (code.equals("pln")) {
@@ -178,7 +186,7 @@ public class RayTracer {
 
 				} else if (code.equals("trg")) {
 					// Add code here to parse light parameters
-					if (params.length != 10) {
+					if (params.length < 10) {
 						System.out.println("triangle input file error");
 						r.close();
 						return;
@@ -191,7 +199,15 @@ public class RayTracer {
 					Point p3 = new Point(Double.parseDouble(params[6]), Double.parseDouble(params[7]),
 							Double.parseDouble(params[8]));
 					int mat_index = Integer.parseInt(params[9]);
-					surfaces_list.add(new Triangle(p1, p2, p3, mat_index));
+
+					Point direction = null;
+					float movementSize = 0f;
+					if(params.length == 14){
+						direction = new Point(Double.parseDouble(params[10]), Double.parseDouble(params[11]),
+								Double.parseDouble(params[12]));
+						movementSize = Float.parseFloat(params[13]);
+					}
+					surfaces_list.add(new Triangle(p1, p2, p3, mat_index, direction, movementSize));
 
 					System.out.println(String.format("Parsed triangle (line %d)", lineNum));
 
